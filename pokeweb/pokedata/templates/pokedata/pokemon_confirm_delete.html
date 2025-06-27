@@ -1,8 +1,0 @@
-{% extends "./base.html" %}
-{% block content %}
-  <h2>Delete Pokémon</h2>
-  <form method="post">{% csrf_token %}
-    <p>Are you sure you want to delete "{{ object.pokemon_name }}"?</p>
-    <input type="submit" value="Confirm">
-  </form>
-{% endblock %}
