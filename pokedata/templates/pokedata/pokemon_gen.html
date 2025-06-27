@@ -1,0 +1,23 @@
+{% extends "./base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <h2>Pokémon from Generation {{ selected_generation }}</h2>
+    <table>
+        <tr><th>Pokémon Name</th></tr>
+        {% for pokemon in pokemons %}
+            <tr><td>{{ pokemon.pokemon_name }}</td></tr>
+        {% empty %}
+            <tr><td>No Pokémon found for this generation.</td></tr>
+        {% endfor %}
+    </table>
+    <br />
+
+    <h2>Select Generation</h2>
+    <form action="{% url 'pokemon_by_generation' 0 %}" method="get"
+        onsubmit="this.action = this.action.replace('0', this.elements['generation'].value);">
+        {% csrf_token %}
+        {{ generation_form.generation }}
+    <input type="submit" value="View Pokémon">
+</form>
+{% endblock %}
