@@ -1,0 +1,66 @@
+{% include "./header.html" %}
+{% include "./title.html" %}
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar: master_pokemons is a Page() -->
+    <div class="col-4" id="pokemon_list">
+      {% block pokemonList %}
+        <h1>Pokémon List</h1>
+        <table class="table">
+          <tr><th>Name</th></tr>
+          {% for pokemon in master_pokemons %}
+            <tr>
+              <td>
+                <a href="/pokemon/{{ pokemon.pk }}">
+                  {{ pokemon.pokemon_name }}
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+
+        <nav aria-label="Pokémon sidebar pagination">
+          <ul class="pagination">
+            {# “First” button #}
+            <li class="page-item {% if master_pokemons.number == 1 %}disabled{% endif %}">
+              <a class="page-link" href="?sidebar_page=1">« First</a>
+            </li>
+
+            {# Elided window of pages #}
+            {% for p in sidebar_pages %}
+              {% if p == "…" %}
+                <li class="page-item disabled">
+                  <span class="page-link">…</span>
+                </li>
+              {% elif p == master_pokemons.number %}
+                <li class="page-item active">
+                  <span class="page-link">{{ p }}</span>
+                </li>
+              {% else %}
+                <li class="page-item">
+                  <a class="page-link" href="?sidebar_page={{ p }}">{{ p }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+            {# “Last” button #}
+            <li class="page-item {% if master_pokemons.number == master_pokemons.paginator.num_pages %}disabled{% endif %}">
+              <a class="page-link"
+                 href="?sidebar_page={{ master_pokemons.paginator.num_pages }}">
+                Last »
+              </a>
+            </li>
+          </ul>
+        </nav>
+      {% endblock %}
+    </div>
+
+    <!-- Main content area -->
+    <div class="col-8" id="content">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</div>
+
+{% include "./footer.html" %}

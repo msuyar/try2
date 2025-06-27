@@ -1,0 +1,36 @@
+{% load static %}  
+<nav class="navbar navbar-expand-md sticky-top flex-column">
+    <div class="w-100 d-flex">
+                <div class="navbar-header" id="header">
+                    <img
+                        src="{% static 'images/pokeball.png' %}" 
+                        alt="Poké Ball"
+                        width="60"
+                        height="60"
+                    />
+
+                {# Your local “Pokemon Browser” logo #}
+                <img
+                    src="{% static 'images/browser.png' %}"
+                    alt="Pokémon Browser"
+                    style="height: 3em; vertical-align: middle;"
+                />
+                </div>
+            </div>
+    <div class="w-100 d-flex">
+        <ul class="navbar-nav mr-auto" id="navigation">
+            <li class="nav-item active">
+                <a class="nav-link" style="color: white" href="{% url 'pokemon-index' %}"> Home 
+                    <span class="sr-only"></span> </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" style="color: white" href="https://www.pokemon.com/">Pokemon
+                    <span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" style="color: white" href="https://www.pokemondb.net/">Pokemon Database <span class="sronly"></span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+   

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PokéWeb API Home (Gen 1-6)</title>
+</head>
+<body>
+    <h1>PokéWeb API - Web Pages (Gen 1-6)</h1>
+    <ul>
+        <li><a href="/pokemon/">All Pokémon (HTML View)</a></li>
+        <li><a href="/create_pokemon/">Create Pokémon (HTML Form)</a></li>
+        <li><a href="/pokemon/gen/1/">View Pokémon by Generation</a></li>
+        <li><a href="/pokemon/legendary/">Legendary Pokémon</a></li>
+        <li><a href="/pokemon/type/Fire/">Fire-Type Pokémon</a></li>
+        <li><a href="/pokemon/type/Fire/Water/">Dual-Type Pokémon</a></li>
+    </ul>
+    
+
+    {% block content %}
+    <div class="container">
+        <h1 class="mt-4">PokéWeb API Endpoints (Gen 1-6)</h1>
+
+        <hr>
+
+        <!-- Pokémon by ID -->
+        <h2>Find Pokémon by ID</h2>
+        <form id="idSearchForm" onsubmit="goToPokemonById(event)" class="form-inline mb-4">
+            <input type="number" id="pokemon_id" name="pokemon_id" class="form-control mr-2" placeholder="Enter Pokémon ID" required>
+            <button type="submit" class="btn btn-primary">Go</button>
+        </form>
+
+        <!-- Filter by Generation -->
+        <h2>View Pokémon by Generation</h2>
+        <div class="form-inline mb-4">
+            <select id="generation" class="form-control mr-2">
+                <option value="">-- Select Generation --</option>
+                {% for value, label in gen_choices %}
+                    <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+            <button onclick="goToGeneration()" class="btn btn-primary">View</button>
+        </div>
+
+        <!-- Filter by Type -->
+        <h2>Filter by Type</h2>
+        <form id="typeFilterForm" class="form-inline mb-4">
+            <label for="type1" class="mr-2">Primary Type:</label>
+            <select id="type1" name="type1" class="form-control mr-4" required>
+                <option value="">-- Choose --</option>
+                {% for value, label in type_choices %}
+                    <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="type2" class="mr-2">Secondary Type:</label>
+            <select id="type2" name="type2" class="form-control mr-4">
+                <option value="">-- None --</option>
+                {% for value, label in type_choices %}
+                    <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+
+        <!-- Useful Links -->
+        <h2>Additional Actions</h2>
+        <ul>
+            <li><a href="/api/pokemon/">GET All Pokemon</a></li>
+            <li><a href="/api/pokemon/legendary/">GET All Legendary Pokemon</a></li>
+            <li><a href="/api/create_pokemon/">Create Pokémon (HTML Form)</a></li>
+        </ul>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+    function goToPokemonById(event) {
+        event.preventDefault();
+        const id = document.getElementById('pokemon_id').value;
+        if (id) {
+            window.location.href = 'api/pokemon/' + encodeURIComponent(id) + '/';
+        }
+    }
+
+    function goToGeneration() {
+        const gen = document.getElementById('generation').value;
+        if (gen) {
+            window.location.href = '/api/pokemon/gen/' + encodeURIComponent(gen) + '/';
+        } else {
+            alert('Please select a generation.');
+        }
+    }
+
+    document.getElementById('typeFilterForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const t1 = this.elements['type1'].value;
+        const t2 = this.elements['type2'].value;
+        if (!t1) {
+            alert('Please select a primary type.');
+            return;
+        }
+        let url = '/api/pokemon/type/' + encodeURIComponent(t1) + '/';
+        if (t2) {
+            url += encodeURIComponent(t2) + '/';
+        }
+        window.location.href = url;
+    });
+    </script>
+{% endblock %}
+</body>
+</html>
